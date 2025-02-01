@@ -1,28 +1,10 @@
 import React from 'react';
-import image from '../assets/image.png';
 import { Link } from 'react-router-dom';
 import wall from '../assets/wall.jpg';
-import getVideoList from '../api/VideoApi';
-import { useEffect, useState } from 'react';
 
-function Home() {
-  const [videos, setVideos] = useState([]);
 
-  // Utilisation de useEffect pour récupérer les données des vidéos
-  useEffect(() => {
-    async function fetchVideos() {
-      try {
-        const videoList = await getVideoList("son go ku");
-        setVideos(videoList.data); // Assurez-vous que videoList.data contient les données
-      } catch (error) {
-        console.error("Erreur lors de la récupération des vidéos :", error);
-      }
-    }
-
-    fetchVideos();
-  }, []);
-
-  console.log(videos); // Vérifiez les données dans la console
+function Home(props) {
+  // Vérifiez les données dans la console
 
   return (
     <div className='info'>
@@ -37,34 +19,38 @@ function Home() {
             </button>
           </div>
           <div className='flex flex-col gap-4'>
-          <img src={wall} alt="anime" className="w-[500px] h-[600px] object-cover rounded-lg" />
-          <img src={wall} alt="anime" className="w-[500px] h-[600px] object-cover rounded-lg" />
+            <img src={wall} alt="anime" className="w-[500px] h-[600px] object-cover rounded-lg" />
+            <img src={wall} alt="anime" className="w-[500px] h-[600px] object-cover rounded-lg" />
           </div>
-          
+
         </div>
 
         {/* Cartes des animes */}
         <div className='flex flex-wrap h-auto flex-1'>
-        {videos.length > 0 ? (
-          videos.map((anime) => (
-            <div key={anime.mal_id} className='card'>
-              <img
-                src={anime.images.jpg.image_url}
-                alt={anime.title}
-                className="w-full h-[150px] object-cover"
-              />
-              <h1 className='text-white text-start'>{anime.title}</h1>
-              
-              <button className='bg-blue-600 shadow-sm rounded-2xl p-2 text-white text-1xl mb-0'>
-                <Link to="/Stream">Watch</Link>
-              </button>
-            </div>
-          ))
-        ) : (
-          <p>Loading...</p> // Affichez un message de chargement si les données ne sont pas encore disponibles
-        )}
+          {props.videos.length > 0 ? (
+            props.videos.map((anime) => (
+              <div key={anime.mal_id} className='card'>
+                <img
+                  src={anime.images.jpg.image_url}
+                  alt={anime.title}
+                  className="w-full h-[150px] object-cover"
+                />
+                <h1 className='text-white text-start'>{anime.title}</h1>
+                <p>Score: {anime.score}</p>
+
+                <button className='bg-blue-600 shadow-sm rounded-2xl p-2 text-white text-1xl mb-0'>
+                  <Link to={{
+                    pathname: '/Stream'
+                  }}
+                    state={{ videoData: anime }} >Watch</Link>
+                </button>
+              </div>
+            ))
+          ) : (
+            <p>Loading...</p> // Affichez un message de chargement si les données ne sont pas encore disponibles
+          )}
         </div>
-        
+
       </div>
 
 
