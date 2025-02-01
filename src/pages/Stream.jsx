@@ -1,10 +1,11 @@
 import React from 'react';
-import image from '../assets/image.png';
 import wall from '../assets/wall.jpg';
-import getVideoList from '../api/VideoApi';
+import ReactPlayer from 'react-player/youtube';
 
-function Stream(){
- 
+
+function Stream(props){
+  console.log(props.data);
+
 return (
  <div className='container mx-auto mt-12 p-5  bg-gray-100 shadow-lg text-center mb-12 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-2xl flex flex-wrap gap-2 min-h-screen  '>
    
@@ -23,9 +24,14 @@ return (
 
       <div className='players flex-1 flex mt-3 flex-wrap  flex-col '>
          {/* Add your video player components here */}
-         <div className='w-full  h-[600px] bg-black'>
-                <h1 className='text-2xl font-bold text-white text-center'>Anime Title</h1>
-         </div>
+         <div className="w-full h-[500px] bg-black">
+      <ReactPlayer
+        url={props.data.trailer.embed_url}
+        controls
+        width="100%"
+        height="100%"
+      />
+    </div>
          <hr className='w-full mt-0 border-2 border-blue-900'/>
          <div>
               <h1 className='text-2xl font-bold text-white text-center'>Commentaire </h1>
