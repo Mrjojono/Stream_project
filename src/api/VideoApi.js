@@ -10,26 +10,54 @@ function shuffleArray(array) {
   return newArray;
 }
 
-async function getVideoList() {
-  const url = "https://api.jikan.moe/v4/anime";
+
+async function getVideoList(query) {
+  const apiKey = "AIzaSyDEGp9NjTOokyxLbbSSWBIk44lhLgcWnF8"; 
+  const searchQuery = query || "anime"; 
+  const maxResults = 100; 
+
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(searchQuery)}&type=video&maxResults=${maxResults}&key=${apiKey}`;
 
   try {
-    const { data } = await axios.get(url, {
-      params: {
-        limit: 20,  
-      },
-    });
-    
-    // Mélange le tableau des anime pour un ordre aléatoire
-    const shuffledList = shuffleArray(data.data);
-    
-    // Retourne l'objet complet en remplaçant le tableau par le tableau mélangé
-    return { ...data, data: shuffledList };
-    
+    const { data } = await axios.get(url);  
+    const shuffledList = shuffleArray(data.items);
+    return { 
+      items: shuffledList,
+      totalResults: data.pageInfo.totalResults
+    };
+
   } catch (err) {
-    console.error("Error fetching video list:", err.message);
+    console.error("Error fetching video list:", err);
+    if (err.response) {
+     
+      console.error("Response error:", err.response);
+    } else if (err.request) {
+     
+      console.error("Request error:", err.request);
+    } else {
+     
+      console.error("General error:", err.message);
+    }
     throw new Error("Failed to fetch video list. Please try again later.");
   }
 }
 
-export default getVideoList;
+
+async function searchAnime(query) {
+  const apiKey = "AIzaSyDEGp9NjTOokyxLbbSSWBIk44lhLgcWnF8"; // Remplacer par ta clé API
+  const maxResults = 20; 
+
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=${maxResults}&key=${apiKey}`;
+
+  try {
+    const { data } = await axios.get(url);
+    console.log(data); 
+
+    return data.items; 
+  } catch (error) {
+    console.error("Erreur lors de la récupération des vidéos :", error);
+    throw new Error("Failed to fetch search results from YouTube.");
+  }
+}
+
+export { getVideoList, searchAnime };

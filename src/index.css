@@ -24,12 +24,72 @@
   @apply bg-blue-700 rounded-3xl scale-110;
 }
 .card {
-  @apply bg-gray-800 text-white border-2 ml-4 border-blue-800 w-[300px] h-auto max-h-max shadow-lg rounded-lg p-4 flex flex-col gap-3 mt-5;
+  @apply bg-gray-800 text-white border-2 ml-2 border-blue-800 w-[290px] h-[500px] max-h-max shadow-lg rounded-lg p-4 flex flex-col gap-2.5 mt-5;
 
 }
 body {
   @apply bg-gray-950;
 }
-.info {
+.infos {
   @apply  mx-auto mt-12 p-9 w-[85%]  bg-gray-100 shadow-lg text-center mb-12 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-2xl flex flex-wrap gap-2 min-h-screen ;
+}
+
+.infoss {
+  @apply container mx-auto mt-12 p-4  bg-gray-800 shadow-lg text-center mb-12 bg-gradient-to-r from-blue-700 via-blue-800 to-blue-900 rounded-2xl flex flex-wrap gap-2 min-h-screen ;
+}
+
+
+
+
+.info {
+  @apply container mx-auto mt-60 p-8 w-full bg-gray-800 shadow-lg text-center mb-12 bg-gradient-to-r backdrop:blur-2xl rounded-2xl flex flex-wrap gap-2 min-h-screen ;
+}
+
+/* style pour les messages lors des erreurs */
+.success {
+  @apply text-center justify-center items-center p-2 border-2 bg-green-500 text-black rounded-md;
+}
+
+.error {
+  @apply text-center justify-center items-center p-2 border-2 bg-red-500 text-white rounded-md;
+}
+
+.warning {
+  @apply text-center justify-center items-center p-2 border-2 bg-yellow-500 text-black rounded-md;
+}
+
+.default-class {
+  @apply text-center justify-center items-center p-2 border-2 bg-gray-500 text-white rounded-md;
+}
+.info_footer{
+@apply text-white justify-center  flex flex-row items-center p-1 border-none  backdrop:blur-2xl rounded-md w-full;
+}
+.contact {
+  @apply   justify-center flex flex-row items-center p-2 gap-2 text-white rounded-md;
+}
+
+/*
+style pour les informations du profil
+*/
+.info_profil{
+  @apply container mx-auto mt-40 p-4 bottom-20 w-[900px] shadow-lg text-center mb-40 bg-gradient-to-r backdrop:blur-3xl rounded-2xl flex flex-wrap flex-col gap-2 min-h-screen ;
+}
+.img_profil{
+  @apply  border-none  flex flex-row items-center    p-3  gap-2 justify-center; 
+}
+
+.profil_input{
+  @apply bg-blue-950 p-4 rounded-2xl hover:focus:outline-none focus:outline-none hover:shadow-lg hover:shadow-violet-900/50 border border-violet-900 text-white w-full;
+
+}
+
+.error_message{
+  @apply bg-red-200 border-2 border-red-600 h-14
+  justify-center items-center text-center backdrop:blur-2xl;
+}
+
+.accueil{
+@apply bg-black/60 border-2 border-violet-950  p-8  m-4 w-full max-w-[90%] mx-auto 
+ shadow-2xl  shadow-violet-600 rounded-2xl
+;
 }
