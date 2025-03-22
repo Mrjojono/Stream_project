@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom'; // Ajouter l'importation de useLocation
 import wall from '../assets/wall.jpg';
-import ReactPlayer from 'react-player/youtube';
 
 
-function Stream() {
+function AnimeStream() {
   console.log("donner passer");
    
   const [comment, setComment] = useState('');
@@ -36,6 +35,7 @@ function Stream() {
     }
   };
 
+  const baseurl = "https://2anime.xyz/embed/";
   return (
     <div className='info flex-grow flex flex-col '>
 
@@ -43,13 +43,14 @@ function Stream() {
 
       <div className='players flex-1 flex mt-3 flex-wrap flex-col'>
         <div className=" max-w-full  h-[600px] rounded-2xl bg-black">
-          <ReactPlayer
-            url={`https://www.youtube.com/watch?v=${videoData.id?.videoId}`}
-            controls
-            width="100%"
-            height="100%"
-          />
-
+     
+      <iframe
+        src={baseurl+videoData}
+        width="100%"
+        height="100%"
+        allowFullScreen
+        title="video"
+      ></iframe>
         </div>
        
         <hr className='bg-black border-opacity-10 border-black mt-4 mb-1' />
@@ -120,23 +121,10 @@ function Stream() {
             </div>
           </div>
         </div>
-
-        <div className="bg-black/50 border-2 border-violet-950 shadow-inner p-5 rounded-lg m-4">
-          <div className='mt-4 mb-4'>
-            <h1 className='text-4xl font-bold text-white mb-4'>
-              {videoData.snippet?.title || 'No title'} {/* Afficher le titre de la vidéo */}
-            </h1>
-            <p className='text-white text-lg'>
-              {videoData.snippet?.description || 'No description'} {/* Afficher la description de la vidéo */}
-            </p>
-          </div>
-          <img
-            src={videoData.snippet?.thumbnails?.high?.url || wall} // Utiliser la bonne source d'image
-            alt="anime"
-            className="w-full  h-[600px] object-cover rounded-lg"
-          />
-      </div>
-
+{/* Afficher les détails de la vidéo 
+    
+*/}
+        
      
       </div>
 
@@ -145,4 +133,4 @@ function Stream() {
   );
 }
 
-export default Stream;
+export default AnimeStream;

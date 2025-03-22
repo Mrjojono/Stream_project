@@ -60,4 +60,19 @@ async function searchAnime(query) {
   }
 }
 
-export { getVideoList, searchAnime };
+
+async function getAnime() {
+  const url = "http://localhost:8000/auth/anime";
+
+  try {
+    const { data } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des vidéos :", error);
+    throw new Error("Failed to fetch anime list.");
+  }
+}
+const data = getAnime();
+console.log("donnner des animes ");
+console.log(data);
+export { getVideoList, searchAnime, getAnime };
