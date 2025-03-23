@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import "tailwindcss/tailwind.css";
 import Auth from "../authentification/Auth";
-
+import UserContext from "./userContext";
 function LoginForm({ onLogin }) {
   // Ajoutez onLogin comme prop
   const [showPassword, setShowPassword] = useState(false);
@@ -11,6 +11,9 @@ function LoginForm({ onLogin }) {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+
+  
+  const { setUser } = useContext(UserContext);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -33,7 +36,8 @@ function LoginForm({ onLogin }) {
     if ((data.message = "Login successful")) {
       localStorage.setItem("userToken", data.token);
       onLogin(true);
-      navigate("/");
+      setUser(data.data);
+      navigate("/",{ state: data.data });
     }
   };
 

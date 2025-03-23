@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 
 function Anime({ videos, search }) {
   const [filteredVideos, setFilteredVideos] = useState(videos);
-
+  console.log("mes videos ");
+  console.log(videos);
   useEffect(() => {
     if (videos && Array.isArray(videos)) {
       const filtered = videos.filter((video) =>
@@ -66,9 +67,11 @@ function Anime({ videos, search }) {
                   <Link
                     to={{ pathname: "/AnimeStream" }}
                     state={{ videoData: video.link_url,
-                        title: video.title
+                        title: video.title,
+                        img: video.thumbnail_url,
                      }}
                   >
+                    
                     Watch
                   </Link>
                 </button>

@@ -12,7 +12,7 @@ function shuffleArray(array) {
 
 
 async function getVideoList(query) {
-  const apiKey = "AIzaSyDEGp9NjTOokyxLbbSSWBIk44lhLgcWnF8"; 
+  const apiKey = "AIzaSyAkZdTNuZyGqhqsy42_gVLQ0H-6GkybxUY"; 
   const searchQuery = query || "anime"; 
   const maxResults = 100; 
 
@@ -44,7 +44,7 @@ async function getVideoList(query) {
 
 
 async function searchAnime(query) {
-  const apiKey = "AIzaSyDEGp9NjTOokyxLbbSSWBIk44lhLgcWnF8"; // Remplacer par ta clé API
+  const apiKey = "AIzaSyAkZdTNuZyGqhqsy42_gVLQ0H-6GkybxUY"; // Remplacer par ta clé API
   const maxResults = 20; 
 
   const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&maxResults=${maxResults}&key=${apiKey}`;
@@ -72,7 +72,35 @@ async function getAnime() {
     throw new Error("Failed to fetch anime list.");
   }
 }
-const data = getAnime();
-console.log("donnner des animes ");
-console.log(data);
-export { getVideoList, searchAnime, getAnime };
+
+async function getPictures() {
+  const url = "http://localhost:8000/auth/random";
+  
+  try {
+    const { data } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des photos:", error);
+    throw new Error("Failed to fetch anime list.");
+  }
+}
+
+
+async function getEpisode(title) {
+  const url = "http://localhost:8000/auth/episodes";
+
+  try {
+    const response = await axios.post(url, { title }, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+
+    return { data: response.data, error: null }; // On récupère uniquement response.data
+  } catch (error) {
+    console.error("Erreur lors de la récupération des épisodes:", error);
+    return { data: null, error };
+  }
+}
+
+export { getVideoList, searchAnime, getAnime,getPictures,getEpisode };
