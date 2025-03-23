@@ -6,7 +6,7 @@ function Footer() {
             Anime Streaming is a platform that allows you to watch your favorite anime shows and movies for free.
           </p>
           <div className="contact mt-2">
-            <span><i className="fas fa-phone"></i> &nbsp; +1-123-456-7890</span>
+            <span><i className="fas fa-phone"></i> &nbsp; +228-79-97-14-53</span>
             <span><i className="fas fa-envelope"></i> &nbsp; nutsuskpuijoan@gmail.com </span>
           </div>
         </footer>

@@ -49,6 +49,7 @@ function Stream() {
             width="100%"
             height="100%"
           />
+
         </div>
        
         <hr className='bg-black border-opacity-10 border-black mt-4 mb-1' />

@@ -42,7 +42,7 @@ body {
 
 
 .info {
-  @apply container mx-auto mt-60 p-8 w-full bg-gray-800 shadow-lg text-center mb-12 bg-gradient-to-r backdrop:blur-2xl rounded-2xl flex flex-wrap gap-2 min-h-screen ;
+  @apply container mx-auto mt-40 p-8 w-full bg-black shadow-violet-700 shadow-lg text-center mb-12 bg-gradient-to-r backdrop:blur-2xl rounded-2xl flex flex-wrap gap-2 min-h-screen ;
 }
 
 /* style pour les messages lors des erreurs */
@@ -92,4 +92,40 @@ style pour les informations du profil
 @apply bg-black/60 border-2 border-violet-950  p-8  m-4 w-full max-w-[90%] mx-auto 
  shadow-2xl  shadow-violet-600 rounded-2xl
 ;
+
+
+
+/* Personnalisation de la scrollbar */
+@layer components {
+  .custome-scrollbar {
+    @apply overflow-y-auto;
+
+   
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background-color: #f0f0f0; 
+      border-radius: 9999px; 
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #888; 
+      border-radius: 9999px;
+    }
+
+    /* Pour le mode sombre */
+    @media (prefers-color-scheme: dark) {
+      &::-webkit-scrollbar-track {
+        background-color: #333;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #555;
+      }
+    }
+  }
+}
+
 }

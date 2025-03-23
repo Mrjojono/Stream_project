@@ -2,19 +2,24 @@ import React, {  useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
+import { UserProvider } from "./components/userContext";
 import Home from "./pages/Home";
 import Register from "./components/Register";
 import Header from "./components/header";
 import Profil from "./pages/Profil";
 import Footer from "./components/Footer";
 import Stream from "./pages/Stream";
+import AnimeStream from "./pages/AnimeStream";
 import Movie from "./pages/movies";
-import { getVideoList, searchAnime } from "./api/VideoApi";
+import Anime from "./pages/Anime";
+import { getVideoList, searchAnime, getAnime, getPictures } from "./api/VideoApi";
 
 function App() {
   const [videos, setVideos] = useState([]);
   const [movies,setMovies] = useState([]);
   const [series,setSeries] = useState([]);
+  const [anime,setAnime] = useState([]);
+  const [pictures,setPictures] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -49,6 +54,18 @@ function App() {
     fetchMovies();
   }, []);
 
+  useEffect(() => {
+    async function fetchAnime() {
+      try {
+        const AnimeList = await getAnime();
+        setAnime(AnimeList);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des vidéos :", error);
+      }
+    }
+    fetchAnime();
+  }, []);
+
 
   useEffect(() => {
     async function fetchSeries() {
@@ -60,6 +77,18 @@ function App() {
       }
     }
     fetchSeries();
+  }, []);
+
+  useEffect(() => {
+    async function fetchPictures() {
+      try {
+        const PicutureList = await getPictures();
+        setPictures(PicutureList);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des vidéos :", error);
+      }
+    }
+    fetchPictures();
   }, []);
 
   
@@ -98,21 +127,26 @@ function App() {
 
 
   return (
-    <Router>
+    <UserProvider>
+      <Router>
       <Layout
         login={isLoggedIn}
         movies={movies}
         videos={videos}
         series = {series}
+        anime = {anime}
+        pictures = {pictures}
         onLogin={handleLogin}
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
       />
     </Router>
+    </UserProvider>
+    
   );
 }
 
-function Layout({ login, videos, movies, series, onLogin, searchTerm, setSearchTerm }) {
+function Layout({ login, videos, movies, anime, series, pictures, onLogin, searchTerm, setSearchTerm }) {
   const location = useLocation();
   const showHeader =
     location.pathname === "/" ||
@@ -120,7 +154,9 @@ function Layout({ login, videos, movies, series, onLogin, searchTerm, setSearchT
     location.pathname === "/Profil" ||
     location.pathname === "/Movies" ||
     location.pathname === "/Series"||
-    location.pathname === "/Anime";
+    location.pathname === "/Anime"  ||
+    location.pathname === "/Animes" ||
+    location.pathname === "/AnimeStream";
   const showFooter =
     location.pathname === "/" ||
     location.pathname === "/Stream" ||
@@ -137,14 +173,16 @@ function Layout({ login, videos, movies, series, onLogin, searchTerm, setSearchT
         />
       )}
       <Routes>
-        <Route path="/" element={<Home videos={videos} search={searchTerm} />} />
+        <Route path="/" element={<Home videos={anime} pictures={pictures} search={searchTerm} />} />
         <Route path="/Stream" element={<Stream />} />
+        <Route path="/AnimeStream" element={<AnimeStream />} />
         <Route path="/login" element={<LoginForm onLogin={onLogin} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/Profil" element={<Profil />} />
         <Route path="/Movies" element={<Movie  videos={movies} search={searchTerm}/>} />
         <Route path="/Series" element={<Movie  videos={series} search={searchTerm}/>} />
         <Route path="/Anime" element={<Movie videos={videos} search={searchTerm} />} />
+        <Route path="/Animes" element={<Anime videos={anime} search={searchTerm} />} />
       </Routes>
       {showFooter && <Footer />}
     </>
