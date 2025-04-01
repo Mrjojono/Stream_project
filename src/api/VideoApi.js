@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const URL_BASE = process.env.REACT_APP_URL_BASE;
+
 // Fonction pour mélanger un tableau (algorithme de Fisher-Yates)
 function shuffleArray(array) {
   const newArray = [...array];
@@ -63,11 +65,12 @@ async function searchAnime(query) {
 
 async function getAnime(pages) {
   let url;
-  if (pages==null){
-     url = "http://localhost:8000/auth/anime";
-  }else{
-     url = "http://localhost:8000/auth/anime?page="+pages;
+  if (pages == null) {
+    url = `${URL_BASE}/anime`;  // Utilise l'URL_BASE de .env
+  } else {
+    url = `${URL_BASE}/anime?page=${pages}`;
   }
+
   try {
     const { data } = await axios.get(url);
     return data;
@@ -77,12 +80,13 @@ async function getAnime(pages) {
   }
 }
 
+
 async function getMovies(pages) {
   let url;
   if (pages==null){
-     url = "http://localhost:8000/auth/movies";
+    url = `${URL_BASE}/movies`;
   }else{
-     url = "http://localhost:8000/auth/movies?page="+pages;
+    url = `${URL_BASE}/movies?page=${pages}`;
   }
   try {
     const { data } = await axios.get(url);
@@ -97,7 +101,7 @@ async function getMovies(pages) {
 
 
 async function getPictures() {
-  const url = "http://localhost:8000/auth/random";
+  const url = `${URL_BASE}/random`;
   
   try {
     const { data } = await axios.get(url);
@@ -110,7 +114,7 @@ async function getPictures() {
 
 
 async function getEpisode(title) {
-  const url = "http://localhost:8000/auth/episodes";
+  const url =  `${URL_BASE}/episodes`;
 
   try {
     const response = await axios.post(url, { title }, {
