@@ -61,9 +61,13 @@ async function searchAnime(query) {
 }
 
 
-async function getAnime() {
-  const url = "http://localhost:8000/auth/anime";
-
+async function getAnime(pages) {
+  let url;
+  if (pages==null){
+     url = "http://localhost:8000/auth/anime";
+  }else{
+     url = "http://localhost:8000/auth/anime?page="+pages;
+  }
   try {
     const { data } = await axios.get(url);
     return data;
@@ -72,6 +76,25 @@ async function getAnime() {
     throw new Error("Failed to fetch anime list.");
   }
 }
+
+async function getMovies(pages) {
+  let url;
+  if (pages==null){
+     url = "http://localhost:8000/auth/movies";
+  }else{
+     url = "http://localhost:8000/auth/movies?page="+pages;
+  }
+  try {
+    const { data } = await axios.get(url);
+    return data;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des vidéos :", error);
+    throw new Error("Failed to fetch anime list.");
+  }
+}
+
+
+
 
 async function getPictures() {
   const url = "http://localhost:8000/auth/random";
@@ -103,4 +126,4 @@ async function getEpisode(title) {
   }
 }
 
-export { getVideoList, searchAnime, getAnime,getPictures,getEpisode };
+export { getVideoList, searchAnime, getAnime,getPictures,getEpisode,getMovies };
