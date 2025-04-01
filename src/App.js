@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
@@ -10,18 +10,27 @@ import Profil from "./pages/Profil";
 import Footer from "./components/Footer";
 import Stream from "./pages/Stream";
 import AnimeStream from "./pages/AnimeStream";
+import MovieStream from "./pages/MovieStream";
 import Movie from "./pages/movies";
+import Movies from "./pages/Movie";
 import Anime from "./pages/Anime";
-import { getVideoList, searchAnime, getAnime, getPictures } from "./api/VideoApi";
+import {
+  getVideoList,
+  searchAnime,
+  getAnime,
+  getPictures,
+  getMovies,
+} from "./api/VideoApi";
 
 function App() {
   const [videos, setVideos] = useState([]);
-  const [movies,setMovies] = useState([]);
-  const [series,setSeries] = useState([]);
-  const [anime,setAnime] = useState([]);
-  const [pictures,setPictures] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [series, setSeries] = useState([]);
+  const [anime, setAnime] = useState([]);
+  const [pictures, setPictures] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [pages, setPages] = useState(0);
 
   // Fonction pour mettre à jour l'état de connexion
   const handleLogin = (status) => {
@@ -45,27 +54,28 @@ function App() {
   useEffect(() => {
     async function fetchMovies() {
       try {
-        const movieList = await getVideoList("movie");
-        setMovies(movieList.items);
+       // const movieList = await getVideoList("movie");
+       const movieList = await getMovies(pages);
+        setMovies(movieList.results);
       } catch (error) {
         console.error("Erreur lors de la récupération des vidéos :", error);
       }
     }
     fetchMovies();
-  }, []);
+  }, [pages]);
 
   useEffect(() => {
     async function fetchAnime() {
       try {
-        const AnimeList = await getAnime();
+        const AnimeList = await getAnime(pages);
+
         setAnime(AnimeList);
       } catch (error) {
         console.error("Erreur lors de la récupération des vidéos :", error);
       }
     }
     fetchAnime();
-  }, []);
-
+  }, [pages]);
 
   useEffect(() => {
     async function fetchSeries() {
@@ -91,20 +101,19 @@ function App() {
     fetchPictures();
   }, []);
 
-  
   // Récupérer les vidéos en fonction de la recherche
   useEffect(() => {
     async function fetchVideosonsearch() {
       try {
         const videoList = await searchAnime(searchTerm);
-        setVideos(videoList.items); 
+        setVideos(videoList.items);
       } catch (error) {
         console.error("Erreur lors de la récupération des vidéos :", error);
       }
     }
 
     if (searchTerm) {
-      fetchVideosonsearch(); 
+      fetchVideosonsearch();
     } else {
       // Si aucune recherche, recharger toutes les vidéos
       async function reloadVideos() {
@@ -118,45 +127,57 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem("userToken");
     if (token) {
-        console.log("User is authenticated");
+      console.log("User is authenticated");
     } else {
-        console.log("User is not authenticated");
+      console.log("User is not authenticated");
     }
-}, []);
-
-
+  }, []);
 
   return (
     <UserProvider>
       <Router>
-      <Layout
-        login={isLoggedIn}
-        movies={movies}
-        videos={videos}
-        series = {series}
-        anime = {anime}
-        pictures = {pictures}
-        onLogin={handleLogin}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-      />
-    </Router>
+        <Layout
+          login={isLoggedIn}
+          movies={movies}
+          videos={videos}
+          series={series}
+          anime={anime}
+          pictures={pictures}
+          onLogin={handleLogin}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          setPages={setPages}
+          pages={pages}
+        />
+      </Router>
     </UserProvider>
-    
   );
 }
 
-function Layout({ login, videos, movies, anime, series, pictures, onLogin, searchTerm, setSearchTerm }) {
+function Layout({
+  login,
+  videos,
+  movies,
+  anime,
+  series,
+  pictures,
+  onLogin,
+  searchTerm,
+  setSearchTerm,
+  setPages,
+  pages,
+}) {
   const location = useLocation();
   const showHeader =
     location.pathname === "/" ||
     location.pathname === "/Stream" ||
     location.pathname === "/Profil" ||
     location.pathname === "/Movies" ||
-    location.pathname === "/Series"||
-    location.pathname === "/Anime"  ||
+    location.pathname === "/Series" ||
+    location.pathname === "/Anime" ||
     location.pathname === "/Animes" ||
-    location.pathname === "/AnimeStream";
+    location.pathname === "/AnimeStream" ||
+    location.pathname === "/MovieStream";
   const showFooter =
     location.pathname === "/" ||
     location.pathname === "/Stream" ||
@@ -173,16 +194,42 @@ function Layout({ login, videos, movies, anime, series, pictures, onLogin, searc
         />
       )}
       <Routes>
-        <Route path="/" element={<Home videos={anime} pictures={pictures} search={searchTerm} />} />
+        <Route
+          path="/"
+          element={
+            <Home videos={anime} pictures={pictures} search={searchTerm} />
+          }
+        />
         <Route path="/Stream" element={<Stream />} />
         <Route path="/AnimeStream" element={<AnimeStream />} />
+        <Route path="/MovieStream" element={<MovieStream />} />
         <Route path="/login" element={<LoginForm onLogin={onLogin} />} />
         <Route path="/register" element={<Register />} />
         <Route path="/Profil" element={<Profil />} />
-        <Route path="/Movies" element={<Movie  videos={movies} search={searchTerm}/>} />
-        <Route path="/Series" element={<Movie  videos={series} search={searchTerm}/>} />
-        <Route path="/Anime" element={<Movie videos={videos} search={searchTerm} />} />
-        <Route path="/Animes" element={<Anime videos={anime} search={searchTerm} />} />
+       {/**
+        * <Route   path="/Movies" element={<Movie videos={movies} search={searchTerm} />}/> */ } 
+        <Route
+          path="/Series"
+          element={<Movie videos={series} search={searchTerm} />}
+        />
+        <Route
+          path="/Anime"
+          element={
+            <Movie videos={videos} search={searchTerm} setPages={setPages} />
+          }
+        />
+        <Route
+          path="/Animes"
+          element={
+            <Anime videos={anime} search={searchTerm} setPages={setPages} />
+          }
+        />
+        <Route
+        path="/Movies"
+        element={
+          <Movies videos={movies} search={searchTerm} setPages={setPages} />
+        }
+      />
       </Routes>
       {showFooter && <Footer />}
     </>

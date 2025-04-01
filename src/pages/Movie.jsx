@@ -1,21 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
-function Anime({ videos, search, setPages }) {
-  const [filteredVideos, setFilteredVideos] = useState(videos);
-
-  useEffect(() => {
-    if (videos && Array.isArray(videos)) {
-      const filtered = videos.filter((video) =>
-        video.title.toLowerCase().includes(search.toLowerCase())
-      );
-      setFilteredVideos(filtered);
-    } else {
-      setFilteredVideos([]);
-    }
-  }, [search, videos]);
-
+function Movies({ videos,setPages }) {
   const containerVariants = {
     hidden: { opacity: 1 },
     show: {
@@ -33,53 +20,46 @@ function Anime({ videos, search, setPages }) {
 
   return (
     <div className="info">
-      <div className="text-center  mb-12 bg-gradient-to-r from-gray-700 via-gray-900 to-black rounded-2xl flex gap-8 flex-wrap flex-row min-h-screen p- border-none">
+      <div className="text-center mb-12 bg-gradient-to-r from-gray-700 via-gray-900 to-black rounded-2xl flex gap-8 flex-wrap flex-row min-h-screen p-4 border-none">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="show"
           className="flex flex-wrap gap-6 mb-5 justify-center w-full"
         >
-          {filteredVideos.length > 0 ? (
-            filteredVideos.map((video) => (
+          {videos?.length > 0 ? (
+            videos.map((video) => (
               <motion.div
-                key={video.title}
+                key={video.id}
                 variants={cardVariants}
                 className="card bg-black/60 border-2 border-violet-950 rounded-lg shadow-lg hover:shadow-violet-900/50 transition-shadow duration-300 w-full sm:w-[300px] p-4"
               >
                 <img
-                  src={video.thumbnail_url}
+                  src={`https://image.tmdb.org/t/p/w500${video.poster_path}`}
                   alt={video.title}
                   className="w-full h-[200px] object-cover rounded-lg"
                 />
                 <h1 className="text-white text-xl font-bold mt-4">
-                  {video.title.slice(0, 20)}...
+                  {video.title?.slice(0, 20)}...
                 </h1>
-                {/*
                 <p className="text-gray-300 mt-2">
-                   {video.snippet.description.slice(0, 20)}...
-                </p>*/}
+                  {video.overview ? video.overview.slice(0, 50) : "No description"}...
+                </p>
 
                 <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full mt-4 transition duration-300">
-                  <Link
-                    to={{ pathname: "/AnimeStream" }}
-                    state={{
-                      videoData: video.link_url,
-                      title: video.title,
-                      img: video.thumbnail_url,
-                    }}
-                  >
+                  <Link to={{ pathname: "/MovieStream" }} state={{ videoData: video,
+                    videos : videos
+                   }}>
                     Watch
                   </Link>
                 </button>
               </motion.div>
             ))
           ) : (
-            <p className="text-white text-2xl">Loading....</p>
+            <p className="text-white text-2xl">Aucun film trouvé...</p>
           )}
         </motion.div>
       </div>
-
       <div className="flex flex-row  flex-wrap relative justify-center gap-2 backdrop:blur-2xl items-center">
         <input
           type="button"
@@ -150,4 +130,4 @@ function Anime({ videos, search, setPages }) {
   );
 }
 
-export default Anime;
+export default Movies;

@@ -11,7 +11,6 @@ function AnimeStream() {
 
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
-  const [episodes, setEpisodes] = useState([]);
   const commentsEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -26,21 +25,10 @@ function AnimeStream() {
   
   
   const location = useLocation();
-  const {videoData,title,img} = location.state || {};
+  const {videoData,videos} = location.state || {};
 
   
   
-  useEffect(() => {
-    async function loadEpisodes() {
-      const { data, error } = await getEpisode(title);
-      if (error) {
-        console.error("Erreur:", error);
-      } else {
-        setEpisodes(data); 
-      }
-    }
-    loadEpisodes();
-  }, [title]); 
   
  
   
@@ -85,31 +73,34 @@ function AnimeStream() {
   }
 
  
-  const baseurl = "https://2anime.xyz/embed/";
+  
 
   return (
     <div className="info flex-grow flex flex-col ">
       <div className="players flex-1 flex mt-3 flex-wrap flex-col">
         <div className="max-w-full flex flex-col gap-2 h-[600px] rounded-2xl ">
           <span>
+           
+
             <img
-            src={img}
-            alt={title}
-            className="w-full h-[100px] object-cover blur-xl "
-            />
+            src= {`https://image.tmdb.org/t/p/w500${videoData.poster_path}`} // Utiliser la bonne source d'image
+            alt="anime"
+            className="w-full  h-[100px] object-cover blur-xl"
+          />
             
-            <h1 className="text-white text-4xl text-start">{title}  
+            <h1 className="text-white text-4xl text-start">{videoData.title} 
             </h1>
             
           </span>
           <iframe
-            src={baseurl + videoData}
-            width="100%"
-            height="100%"
-            allowFullScreen
-            title="video"
-            className="rounded-2xl"
-          ></iframe>
+         src={` https://vidapi.xyz/embedmulti/movie/${videoData.id}`}
+         width="100%"
+         height="100%"
+         allowFullScreen
+         title="video"
+         className="rounded-2xl"
+        />
+
         </div>
 
         {/* ceci pour la liste des episodes suivant */}
@@ -123,31 +114,35 @@ function AnimeStream() {
           animate="show"
           className="flex flex-wrap gap-6 mb-5 justify-center w-full"
         >
-          {episodes.length > 0 ? (
-            episodes.map((video) => (
+          {videos.length > 0 ? (
+            videos.map((video) => (
            
               <motion.div
-                key={video.title+video.episode}
+                key={video.id}
                 variants={cardVariants} 
                 
                 className="card bg-black/60 border-2 border-violet-950 rounded-lg shadow-xl hover:shadow-violet-900/50 transition-shadow duration-300 w-full sm:w-[300px] p-4"
               >
-                <img
-                  src={video.thumbnail_url}
+               <img
+                  src={`https://image.tmdb.org/t/p/w500${video.poster_path}`}
                   alt={video.title}
                   className="w-full h-[200px] object-cover rounded-lg"
                 />
                 <h1 className="text-white text-xl font-bold mt-4">
                {video.title.slice(0, 20)}...
-               Episodes {video.episode}
+               
                 </h1>
                 
 
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full mt-4 transition duration-300">
+                <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full mt-4 transition duration-300"
+                onClick={() => {
+                    window.scrollTo(0, 0);
+                }}
+                >
                   <Link
-                    to={{ pathname: "/AnimeStream" }}
-                    state={{ videoData: video.link_url,
-                        title: video.title
+                    to={{ pathname: "/MovieStream" }}
+                    state={{ videoData: video,
+                        videos: videos
                      }}
                   >
                     Watch

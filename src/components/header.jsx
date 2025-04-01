@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Auth from "../authentification/Auth";
 
 function Header({ login, searchTerm, setSearchTerm }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +40,9 @@ function Header({ login, searchTerm, setSearchTerm }) {
             <li><Link to="/Profil" className="nav-item"><i className="fas fa-user"></i> Profil</Link></li>
             <li>
               {login ? (
-                <Link to="/login" className="nav-item"> <i className="fas fa-sign-out-alt"></i> Log out</Link>
+                <Link to="/login" className="nav-item"
+                onClick={() => Auth.logout()}
+                > <i className="fas fa-sign-out-alt"></i> Log out</Link>
               ) : (
                 <Link to="/login" className="nav-item"> <i className="fas fa-sign-in-alt"></i> Login</Link>
               )}
