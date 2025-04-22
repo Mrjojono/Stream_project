@@ -13,11 +13,11 @@
 }
 
 .nav-item {
-  @apply text-white px-4 py-2 transition-transform transform;
+  @apply text-white  px-6 py-2 transition-transform transform;
 }
 
 .nav-item:hover {
-  @apply bg-blue-700 rounded-3xl scale-110;
+  @apply bg-blue-700 rounded-3xl scale-110 duration-100 transition;
 }
 
 .nav-item.active {

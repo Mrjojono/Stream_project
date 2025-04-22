@@ -7,7 +7,7 @@ function Header({ login, searchTerm, setSearchTerm }) {
 
   return (
     <header>
-      <nav className="fixed top-0 w-full h-20 border-b-2 border-blue-900 bg-gray-900 text-white z-10">
+      <nav className="fixed top-0 w-full h-20 border-b-2 border-violet-950 bg-gray-900 text-white z-10">
         <div className="flex justify-between items-center px-6 md:px-8 h-full">
           {/* Logo */}
           <Link to="/" className="text-2xl font-extrabold">Anime Streaming</Link>
@@ -30,6 +30,7 @@ function Header({ login, searchTerm, setSearchTerm }) {
               {isOpen ? "✕" : "≡"}
             </button>
           </div>
+          
 
           {/* Desktop Navigation */}
           <ul className="hidden md:flex gap-6 items-center">

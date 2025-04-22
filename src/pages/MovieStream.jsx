@@ -28,15 +28,12 @@ function AnimeStream() {
   const {videoData,videos} = location.state || {};
 
   
-  
-  
- 
-  
   if (!videoData) {
     return <div className="text-4xl text-white text-center"> Loading...</div>;
   }
 
   const handleCommentChange = (e) => {
+
     setComment(e.target.value);
   };
 
@@ -212,12 +209,13 @@ function AnimeStream() {
           </div>
 
           <div className="p-2">
-            <textarea
+            
+            <input
               value={comment}
               onChange={handleCommentChange}
-              className="flex flex-wrap p-5 h-24 border-b-white w-full focus:outline-none rounded-s bg-gray-800 text-white"
+              className="flex flex-wrap p-5 h-24 border-b-white w-[50%] focus:outline-none rounded-s bg-gray-800 text-white"
               placeholder="Add Comment...."
-            ></textarea>
+            />
             <div className="flex flex-row justify-end gap-5 p-2">
               <button
                 onClick={handleCommentSubmit}
