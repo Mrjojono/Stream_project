@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import "tailwindcss/tailwind.css";
 import Auth from "../authentification/Auth";
 import UserContext from "./userContext";
+import useWebSocket from "../hooks/Websocket";
 function LoginForm({ onLogin }) {
   // Ajoutez onLogin comme prop
   const [showPassword, setShowPassword] = useState(false);
@@ -36,6 +37,7 @@ function LoginForm({ onLogin }) {
     if ((data.message = "Login successful")) {
       localStorage.setItem("userToken", data.token);
       onLogin(true);
+      useWebSocket( 'ws://localhost:8080');
       setUser(data.data);
       navigate("/",{ state: data.data });
     }

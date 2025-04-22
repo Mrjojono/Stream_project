@@ -1,6 +1,10 @@
 import axios from "axios";
 
-const URL_BASE = process.env.REACT_APP_URL_BASE;
+
+const URL_BASE = "http://localhost:8000/auth";
+
+/// process.env.REACT_APP_URL_BASE;
+
 
 // Fonction pour mélanger un tableau (algorithme de Fisher-Yates)
 function shuffleArray(array) {
@@ -19,7 +23,7 @@ async function getVideoList(query) {
   const maxResults = 100; 
 
   const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(searchQuery)}&type=video&maxResults=${maxResults}&key=${apiKey}`;
-
+  console.log(URL_BASE);
   try {
     const { data } = await axios.get(url);  
     const shuffledList = shuffleArray(data.items);

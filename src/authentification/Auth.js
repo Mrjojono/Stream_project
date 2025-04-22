@@ -1,5 +1,8 @@
-var socket;
+ // WebSocket connection
+
+
 async function authenticate(email, password) {
+    
     const url = `http://localhost:8000/auth/login`;
 
     const requestData = { 
@@ -21,21 +24,7 @@ async function authenticate(email, password) {
             throw new Error(`Erreur réseau: ${response.statusText}`);
         }
 
-        socket = new WebSocket('ws://127.0.0.1:2346');
-
-        socket.onopen = function(e) {
-            console.log("Connection established");
-            console.log(data.data);
-
-            socket.send("test de connection");
-            /*
-            socket.send(JSON.stringify({
-              username: data.data.NOM,
-              iduser : data.data.IDUSER
-            }));
-            */
-          //  addSystemMessage("Vous êtes connecté au chat");
-          };
+       
 
 
         const data = await response.json();
@@ -93,6 +82,7 @@ async function logout(){
             throw new Error(`Erreur réseau: ${response.statusText}`);
         }
         const data = await response.json();
+        console.log(data);
     }catch(error){
             return { data: null, error}; 
         }

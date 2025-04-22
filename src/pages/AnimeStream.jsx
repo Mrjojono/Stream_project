@@ -23,6 +23,13 @@ function AnimeStream() {
     scrollToBottom();
   }, [comments]);
 
+  useEffect(() => {
+    // Scroll vers 600px verticalement
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // ou 'auto' si tu veux sans animation
+    });
+  }, []);
   
   
   const location = useLocation();

@@ -68,7 +68,6 @@ function App() {
     async function fetchAnime() {
       try {
         const AnimeList = await getAnime(pages);
-
         setAnime(AnimeList);
       } catch (error) {
         console.error("Erreur lors de la récupération des vidéos :", error);

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext , useEffect} from "react";
 import wall from "../assets/wall.jpg";
 import UserContext from "../components/userContext";
 import { Link } from "react-router-dom";
@@ -6,7 +6,14 @@ import { Link } from "react-router-dom";
 function Profil() {
   const { user } = useContext(UserContext); 
   
-
+  useEffect(() => {
+ 
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' 
+    });
+  }, []);
+  
   return (
     <div>
       {user ? (
